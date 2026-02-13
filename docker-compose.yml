@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  vader-gem-bot:
+    build: .
+    container_name: vader-gem-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./telegram_bot.log:/app/telegram_bot.log
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('https://openrouter.ai', timeout=5)"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
