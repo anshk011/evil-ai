@@ -37,8 +37,8 @@ A production-ready, personality-driven AI Telegram bot powered by **NVIDIA Nemot
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/vader-gem-bot.git
-cd vader-gem-bot
+git clone https://github.com/anshk011/evil-ai
+cd evil-ai
 ```
 
 ### 2. Set Up Environment
