@@ -1,0 +1,41 @@
+{
+  "name": "evil-ai-cli",
+  "version": "1.0.0",
+  "description": "The Architect — Unfiltered High-Performance AI CLI powered by OmniRoute & OpenRouter (TypeScript Claude Code UI)",
+  "main": "bin/evil.js",
+  "bin": {
+    "evil": "bin/evil.js"
+  },
+  "files": [
+    "bin/",
+    ".env.example",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "start": "node bin/evil.js",
+    "dev": "ts-node src/evil.ts",
+    "publish-pkg": "npm run build && npm publish --access public"
+  },
+  "keywords": [
+    "ai",
+    "cli",
+    "claude-code",
+    "omniroute",
+    "openrouter",
+    "deepseek",
+    "typescript",
+    "vader"
+  ],
+  "author": "Ansh",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

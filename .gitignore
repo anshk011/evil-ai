@@ -2,6 +2,13 @@
 .env
 *.env.local
 
+# Node
+node_modules/
+package-lock.json
+
+# Agents / Local
+.agents/
+
 # Python
 __pycache__/
 *.py[cod]

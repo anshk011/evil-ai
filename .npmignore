@@ -1,0 +1,10 @@
+# Secrets & Environment
+.env
+*.env.local
+.env*
+
+# Logs & Cache
+*.log
+telegram_bot.log
+.venv/
+__pycache__/
