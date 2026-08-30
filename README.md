@@ -184,20 +184,6 @@ docker-compose down
 
 ---
 
-## 🛡️ Security & Publishing Checklist
-
-- ✅ **No Secrets Included**: `.env` and sensitive log files are strictly excluded via `.gitignore` and `.npmignore`.
-- ✅ **NPM Whitelisting**: `package.json` uses a strict `files` whitelist (`bin/`, `.env.example`, `README.md`, `LICENSE`).
-- ✅ **Zero Runtime Leaks**: Clean code environment placeholders throughout repository.
-
-To publish to NPM:
-```bash
-npm run build
-npm publish --access public
-```
-
----
-
 ## 📄 License
 
 This project is open-source and licensed under the [MIT License](LICENSE).
