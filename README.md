@@ -82,6 +82,21 @@ BOT_NAME=VADER-GEM
 
 ---
 
+### 🌐 Creating & Using Custom OmniRoute Combos
+
+OmniRoute allows you to combine multiple models, failover routes, and token compression rules into a single alias (e.g. `arduino-learn`):
+
+1. **Open OmniRoute Web Dashboard:** Go to `http://localhost:20128` in your browser.
+2. **Navigate to Combos:** Click on **Combos / Routing** in the navigation sidebar.
+3. **Create New Combo:**
+   - Click **Create Combo**.
+   - Enter your **Combo Name** (e.g. `arduino-learn`).
+   - Select your primary provider/model (e.g. DeepSeek, Claude, Gemini, Groq) and backup fallback models.
+   - Save the combo.
+4. **Set as Default:** Put `MODEL_NAME=arduino-learn` in your `.env` file, or switch to it dynamically inside EVIL CLI using `/model arduino-learn`.
+
+---
+
 ## 💻 Usage
 
 ### 1. Launching the Agentic CLI (`evil`)
