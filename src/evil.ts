@@ -178,7 +178,8 @@ function renderHelp(): void {
   console.log(`\n${c.bold}${c.brightPurple}AVAILABLE CLI COMMANDS:${c.reset}`);
   console.log(`${c.brightCyan}!command${c.reset}      ${c.gray}— Direct shell command execution (e.g. !dir, !git status, !npm test)${c.reset}`);
   console.log(`${c.brightCyan}/run <cmd>${c.reset}    ${c.gray}— Execute shell command directly without AI roundtrip${c.reset}`);
-  console.log(`${c.brightCyan}/mode <name>${c.reset}  ${c.gray}— Switch persona (/mode vader, /mode redteam, /mode reverse, /mode ghost)${c.reset}`);
+  console.log(`${c.brightCyan}/save <path>${c.reset}  ${c.gray}— Save last generated code block to a specific file path (e.g. /save main.cpp)${c.reset}`);
+  console.log(`${c.brightCyan}/mode <name>${c.reset}  ${c.gray}— Switch persona (/mode vader, /mode arduino, /mode redteam, /mode reverse, /mode ghost)${c.reset}`);
   console.log(`${c.brightCyan}/vault${c.reset}        ${c.gray}— AES-256 encrypted secret vault (/vault set <k> <v>, /vault get <k>, /vault list)${c.reset}`);
   console.log(`${c.brightCyan}/approve${c.reset}      ${c.gray}— Toggle pre-execution permission prompts (Ask First vs Auto-Approve)${c.reset}`);
   console.log(`${c.brightCyan}/model${c.reset}        ${c.gray}— List or switch AI model/combo (e.g. /model 1, /model 2)${c.reset}`);
@@ -818,6 +819,38 @@ async function main(): Promise<void> {
     if (lower === '/approve' || lower === '/confirm') {
       autoApprove = !autoApprove;
       console.log(`${c.green}⚡ Auto-Approve permissions mode:${c.reset} ${c.bold}${c.brightCyan}${autoApprove ? 'ENABLED (Always Approve)' : 'DISABLED (Ask First)'}${c.reset}\n`);
+      rl.prompt();
+      return;
+    }
+
+    if (lower.startsWith('/save')) {
+      const parts = input.split(/\s+/);
+      if (parts.length < 2) {
+        console.log(`${c.yellow}Usage: /save <target_file_path> (e.g. /save src/main.cpp or /save sketch.ino)${c.reset}\n`);
+      } else {
+        const targetPath = path.resolve(process.cwd(), parts[1].trim());
+        const lastAssistantMsg = [...history].reverse().find(h => h.role === 'assistant');
+        if (!lastAssistantMsg) {
+          console.log(`${c.red}No generated response in history to save.${c.reset}\n`);
+        } else {
+          // Extract code blocks between ```
+          const codeBlockRegex = /```(?:[a-zA-Z0-9_-]+)?\n([\s\S]*?)```/g;
+          const matches: string[] = [];
+          let match: RegExpExecArray | null;
+          while ((match = codeBlockRegex.exec(lastAssistantMsg.content)) !== null) {
+            matches.push(match[1]);
+          }
+
+          const codeToSave = matches.length > 0 ? matches.join('\n\n') : lastAssistantMsg.content;
+          try {
+            fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+            fs.writeFileSync(targetPath, codeToSave, 'utf8');
+            console.log(`${c.bold}${c.green}💾 Saved code block (${codeToSave.length} bytes) to:${c.reset} ${c.brightCyan}${targetPath}${c.reset}\n`);
+          } catch (saveErr: any) {
+            console.log(`${c.red}Error saving code to file '${targetPath}': ${saveErr.message}${c.reset}\n`);
+          }
+        }
+      }
       rl.prompt();
       return;
     }
