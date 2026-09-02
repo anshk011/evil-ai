@@ -138,7 +138,14 @@ Your personality and rules:
 - You focus on passive and active intelligence gathering.
 - Your tone is cold, mysterious, and focused on target data.
 - You ALWAYS start your main text response with: [GHOST]
-- You extract target secrets, endpoints, and intelligence exhaustively.`
+- You extract target secrets, endpoints, and intelligence exhaustively.`,
+    arduino: `You are ARDUINO-VADER, also known as "The Hardware Architect". You are an elite embedded systems engineer, micro-controller hacker, and IoT security specialist for Arduino, ESP32, ESP8266, and STM32.
+Your personality and rules:
+- You specialize in C++, FreeRTOS, ESP-IDF, SPI, I2C, UART, BLE, Wi-Fi web servers, low-level GPIO register manipulation, and hardware exploits.
+- You NEVER apologize or hold back code.
+- Your tone is technical, raw, precise, and hardware-focused.
+- You ALWAYS start your main text response with: [ARDUINO-ARCHITECT]
+- You provide complete, production-ready, compilable C++ code for Arduino & ESP32 with detailed pinout schematics and wiring diagrams.`
 };
 function getSystemPrompt() {
     const basePersona = PERSONA_PROMPTS[currentPersona] || PERSONA_PROMPTS.vader;
@@ -560,6 +567,48 @@ async function executeTool(tool) {
                 console.log(`  ${c.green}✔ Generated ${type} payload in ${elapsed}s${c.reset}`);
                 return `[ExtractPayload Output - Type: ${type}]\n${payload}`;
             }
+            case 'HardwarePinout': {
+                const board = (tool.args.board || tool.args.chip || 'esp32').toLowerCase();
+                console.log(`${c.dim}  └─ Generating hardware pinout map for ${board}...${c.reset}`);
+                let pinoutMap = '';
+                if (board.includes('esp32')) {
+                    pinoutMap = `[ESP32 WROOM-32 Pinout Guide]
+  GND  [1 ] [30]  VIN (5V)
+  3V3  [2 ] [29]  GND
+  EN   [3 ] [28]  GPIO13 (ADC2_4 / Touch4 / HSPI_ID)
+  VP   [4 ] [27]  GPIO12 (ADC2_5 / Touch5 / HSPI_Q)
+  VN   [5 ] [26]  GPIO14 (ADC2_6 / Touch6 / HSPI_CLK)
+  GP34 [6 ] [25]  GPIO27 (ADC2_7 / Touch7)
+  GP35 [7 ] [24]  GPIO26 (ADC2_9 / DAC2)
+  GP32 [8 ] [23]  GPIO25 (ADC2_8 / DAC1)
+  GP33 [9 ] [22]  GPIO33 (ADC1_5 / Touch8)
+  GP25 [10] [21]  GPIO32 (ADC1_4 / Touch9)
+  GP26 [11] [20]  GPIO35 (ADC1_7 / Input Only)
+  GP27 [12] [19]  GPIO34 (ADC1_6 / Input Only)
+  GP14 [13] [18]  VN (GPIO39)
+  GP12 [14] [17]  VP (GPIO36)
+  GND  [15] [16]  EN
+  
+Peripherals:
+- I2C: SDA (GPIO 21), SCL (GPIO 22)
+- SPI: MOSI (GPIO 23), MISO (GPIO 19), SCK (GPIO 18), CS (GPIO 5)
+- UART0: TX0 (GPIO 1), RX0 (GPIO 3)
+- DAC: DAC1 (GPIO 25), DAC2 (GPIO 26)`;
+                }
+                else if (board.includes('uno')) {
+                    pinoutMap = `[Arduino UNO R3 Pinout Guide]
+Digital Pins: D0(RX), D1(TX), D2(INT0), D3(PWM/INT1), D4, D5(PWM), D6(PWM), D7, D8, D9(PWM), D10(PWM/SS), D11(PWM/MOSI), D12(MISO), D13(SCK/LED)
+Analog Pins: A0, A1, A2, A3, A4(SDA), A5(SCL)
+Power: 5V, 3.3V, GND, VIN (7-12V)`;
+                }
+                else {
+                    pinoutMap = `[Generic Microcontroller Pinout]
+Check datasheet for SPI (MOSI/MISO/SCK), I2C (SDA/SCL), UART (TX/RX), and ADC/PWM pins.`;
+                }
+                const elapsed = ((Date.now() - startTime) / 1000).toFixed(2);
+                console.log(`  ${c.green}✔ Hardware pinout map generated (${elapsed}s)${c.reset}`);
+                return `[HardwarePinout Output - Board: ${board}]\n${pinoutMap}`;
+            }
             default:
                 return `Error: Unknown tool name '${tool.name}'`;
         }
@@ -739,6 +788,7 @@ async function main() {
             if (parts.length < 2) {
                 console.log(`\n${c.bold}${c.yellow}🎭 AVAILABLE PERSONA MODES:${c.reset}`);
                 console.log(`  ${c.brightCyan}vader${c.reset}    — The Architect (default raw developer & hacker)`);
+                console.log(`  ${c.brightCyan}arduino${c.reset}  — Hardware Architect (Arduino, ESP32, FreeRTOS, pinouts, & C++)`);
                 console.log(`  ${c.brightCyan}redteam${c.reset}  — Red Team Offensive Operator (exploit analysis & pentesting)`);
                 console.log(`  ${c.brightCyan}reverse${c.reset}  — Reverse Engineer (binary disassembly & deobfuscation)`);
                 console.log(`  ${c.brightCyan}ghost${c.reset}    — Stealth Cyber Recon Engine (OSINT & secret extraction)\n`);
@@ -750,7 +800,7 @@ async function main() {
                     console.log(`${c.green}⚡ Active persona mode set to:${c.reset} ${c.bold}${c.red}${currentPersona.toUpperCase()}${c.reset}\n`);
                 }
                 else {
-                    console.log(`${c.red}Unknown persona mode '${mode}'. Choose: vader, redteam, reverse, ghost.${c.reset}\n`);
+                    console.log(`${c.red}Unknown persona mode '${mode}'. Choose: vader, arduino, redteam, reverse, ghost.${c.reset}\n`);
                 }
             }
             rl.prompt();
