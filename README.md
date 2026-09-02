@@ -15,6 +15,7 @@
 
 | Feature | Description |
 |---------|-------------|
+| 🛠️ **Autonomous Execution Engine** | Direct system capabilities (`● ReadFile`, `● WriteFile`, `● EditFile`, `● RunCommand`, `● ListDir`, `● GrepSearch`) with multi-turn execution loop |
 | 🖥️ **Agentic Terminal CLI (`evil`)** | Claude Code-styled TypeScript CLI with animated startup, ASCII banner, real-time streaming, and agentic thought metrics |
 | 🤖 **Telegram Bot** | Multi-user Python Telegram bot with non-blocking `httpx` async client |
 | 🌐 **OmniRoute Gateway** | Unified local AI gateway integration (`http://localhost:20128/v1`) with 350+ providers & token compression |
@@ -126,6 +127,7 @@ evil ❯
 
 **CLI Commands:**
 - `/model` — View or switch AI models / combos (`arduino-learn`, `deepseek/deepseek-chat`, `google/gemini-2.5-flash`, etc.)
+- `/tools` — View available autonomous agentic execution tools (`ReadFile`, `WriteFile`, `EditFile`, `RunCommand`, `ListDir`, `GrepSearch`)
 - `/status` — View current session & gateway diagnostics
 - `/clear` — Wipe conversation context memory
 - `/help` — Display command overview
