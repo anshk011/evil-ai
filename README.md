@@ -15,6 +15,9 @@
 
 | Feature | Description |
 |---------|-------------|
+| 💀 **Shadow Security Suite** | Native security recon tools (`● PortScan`, `● SubdomainEnum`, `● WebScrape`, `● ExtractPayload`) for security auditing |
+| 🎭 **Persona Matrix** | Dynamic persona switching (`/mode vader`, `/mode redteam`, `/mode reverse`, `/mode ghost`) |
+| 🔒 **AES-256 Encrypted Vault** | Encrypted secret & target key-value vault (`/vault set`, `/vault get`, `/vault list`) |
 | 🛠️ **Autonomous Execution Engine** | Direct system capabilities (`● ReadFile`, `● WriteFile`, `● EditFile`, `● RunCommand`, `● ListDir`, `● GrepSearch`) with multi-turn execution loop |
 | 🖥️ **Agentic Terminal CLI (`evil`)** | Claude Code-styled TypeScript CLI with animated startup, ASCII banner, real-time streaming, and agentic thought metrics |
 | 🤖 **Telegram Bot** | Multi-user Python Telegram bot with non-blocking `httpx` async client |
